@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const products = [
+                { id: 1, name: "Laptop Dell XPS", price: "$1200", status: "In Stock" },
+                { id: 2, name: "iPhone 14 Pro", price: "$999", status: "Out of Stock" },
+                { id: 3, name: "Samsung Galaxy S22", price: "$899", status: "In Stock" },
+                { id: 4, name: "MacBook Air M2", price: "$1100", status: "In Stock" },
+                { id: 5, name: "Sony WH-1000XM5", price: "$399", status: "Out of Stock" },
+                { id: 6, name: "Apple Watch Series 8", price: "$429", status: "In Stock" },
+                { id: 7, name: "Dell Ultrasharp Monitor", price: "$499", status: "In Stock" },
+                { id: 8, name: "HP Pavilion Gaming Laptop", price: "$850", status: "Out of Stock" },
+                { id: 9, name: "Logitech MX Master 3", price: "$99", status: "In Stock" },
+                { id: 10, name: "Razer BlackWidow Keyboard", price: "$129", status: "In Stock" },
+                { id: 11, name: "Bose QuietComfort 45", price: "$329", status: "In Stock" },
+                { id: 12, name: "GoPro Hero 11", price: "$499", status: "Out of Stock" },
+                { id: 13, name: "Canon EOS R5", price: "$3899", status: "In Stock" },
+                { id: 14, name: "Nikon Z9", price: "$5499", status: "Out of Stock" },
+                { id: 15, name: "PlayStation 5", price: "$499", status: "In Stock" },
+                { id: 16, name: "Xbox Series X", price: "$499", status: "In Stock" },
+                { id: 17, name: "Nintendo Switch OLED", price: "$349", status: "Out of Stock" },
+                { id: 18, name: "Apple iPad Pro 12.9", price: "$1099", status: "In Stock" },
+                { id: 19, name: "Samsung Galaxy Tab S8", price: "$799", status: "In Stock" },
+                { id: 20, name: "DJI Mavic 3", price: "$2049", status: "Out of Stock" },
+            ];
+
+            const tableBody = document.getElementById("productTable");
+            const searchInput = document.getElementById("search");
+
+            function renderTable(filteredProducts = products) {
+                tableBody.innerHTML = "";
+                filteredProducts.forEach((product, index) => {
+                    const row = `<tr>
+                        <td style="width: 10%; text-align: center;">${index + 1}</td>
+                        <td style="width: 40%">${product.name}</td>
+                        <td style="width: 20%">${product.status}</td>
+                        <td style="width: 30%; text-align: center;">
+                            <button class='btn btn-info btn-sm' data-bs-toggle="modal" data-bs-target="#viewModal" onclick='viewProduct(${index})'><i class="bi bi-eye"></i></button>
+                            <button class='btn btn-warning btn-sm' data-bs-toggle="modal" data-bs-target="#editModal" onclick='editProduct(${index})'><i class="bi bi-pencil"></i></button>
+                            <button class='btn btn-danger btn-sm' data-bs-toggle="modal" data-bs-target="#deleteModal" onclick='deleteProduct(${index})'><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
+            }
+
+            window.viewProduct = function (index) {
+                document.getElementById("viewProductDetails").innerText = `Name: ${products[index].name}\nPrice: ${products[index].price}\nStatus: ${products[index].status}`;
+            }
+
+            window.editProduct = function (index) {
+                document.getElementById("editProductName").value = products[index].name;
+                document.getElementById("editProductPrice").value = products[index].price;
+                document.getElementById("editProductStatus").value = products[index].status;
+            }
+
+            window.deleteProduct = function (index) {
+                document.getElementById("deleteProductName").innerText = products[index].name;
+            }
+
+            searchInput.addEventListener("input", function () {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredProducts = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+                renderTable(filteredProducts);
+            });
+
+            renderTable();
+        });
+    </script>
+</head>
+
+<body>
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="laptop-1.jpg" class="d-block w-100" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+                <img src="laptop-2.jpg" class="d-block w-100" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+                <img src="laptop-3.jpg" class="d-block w-100" alt="Slide 3">
+            </div>
+            <div class="carousel-item">
+                <img src="laptop-4.jpg" class="d-block w-100" alt="Slide 4">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+    <div class="container mt-4 d-flex justify-content-between">
+        <div class="input-group w-50">
+            <input type="text" id="search" class="form-control" placeholder="Search products...">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+        </div>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+            <i class="bi bi-plus-circle"></i> Add Product
+        </button>
+    </div>
+
+    <div class="container mt-4">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th style="width: 10%; text-align: center;">#</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th style="width: 30%; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="productTable"></tbody>
+        </table>
+    </div>
+
+    <footer class="text-center mt-4 py-2 bg-dark text-white">&copy; 2025 Product Management Dashboard. All rights
+        reserved.</footer>
+
+    <!-- Modals -->
+    <div class="modal fade" id="viewModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Product Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="viewProductDetails"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" id="editProductName" class="form-control mb-2" placeholder="Product Name">
+                    <input type="text" id="editProductPrice" class="form-control mb-2" placeholder="Product Price">
+                    <input type="text" id="editProductStatus" class="form-control mb-2" placeholder="Product Status">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Delete Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete <span id="deleteProductName"></span>?</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
